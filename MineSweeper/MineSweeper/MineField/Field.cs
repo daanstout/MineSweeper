@@ -69,7 +69,14 @@ namespace MineSweeper.Minefield {
         /// <summary>
         /// True if there are no more active bombs
         /// </summary>
-        public bool IsFinished { get => _numActiveBombs == 0; }
+        public bool IsFinished {
+            get {
+                foreach (Tile t in _field)
+                    if ((t.isBomb && !t.isFlagged) || (!t.isBomb && t.isFlagged))
+                        return false;
+                return true;
+            }
+        }
         #endregion
 
         #region Constructors

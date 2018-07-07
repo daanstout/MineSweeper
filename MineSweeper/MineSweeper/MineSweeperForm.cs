@@ -88,6 +88,14 @@ namespace MineSweeper {
                     if (result == DialogResult.Yes) // If the player wants to start a new game, do so
                         NewGame();
                 }
+                
+                if(_field.IsFinished) { // If the player finished, ask him if he wants to start a new game
+                    minefieldPictureBox.Invalidate();
+                    secondTimer.Stop();
+                    DialogResult result = MessageBox.Show("You finished, Congrats!\nNew Game?", "You Win", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                        NewGame();
+                }
 
                 bombsLeftLabel.Text = _field.numActiveBombs.ToString();
                 minefieldPictureBox.Invalidate();
