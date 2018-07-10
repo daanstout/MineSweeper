@@ -159,7 +159,7 @@ namespace MineSweeper.Minefield {
         /// <returns>The number of tiles with a bomb in it</returns>
         private int CalculateNeighbouringMines() {
             int mines = 0;
-            foreach (Tile t in MineSweeperForm.field.GetNeighbours(this))
+            foreach (Tile t in MineSweeperForm.instance.field.GetNeighbours(this))
                 if (t._isBomb)
                     mines++;
             return mines;
@@ -169,7 +169,7 @@ namespace MineSweeper.Minefield {
         /// Reveals the neighbouring tiles
         /// </summary>
         private void RevealNeighbours() {
-            foreach (Tile t in MineSweeperForm.field.GetNeighbours(this))
+            foreach (Tile t in MineSweeperForm.instance.field.GetNeighbours(this))
                 if (!t._isRevealed)
                     t.Click(MouseModes.Click);
         }

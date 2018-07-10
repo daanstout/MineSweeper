@@ -29,6 +29,7 @@
             this.secondTimer = new System.Windows.Forms.Timer(this.components);
             this.bombsLeftLabel = new System.Windows.Forms.Label();
             this.newGameButton = new System.Windows.Forms.Button();
+            this.botIntervalTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.minefieldPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,6 +78,10 @@
             this.newGameButton.UseVisualStyleBackColor = true;
             this.newGameButton.Click += new System.EventHandler(this.newGameButton_Click);
             // 
+            // botIntervalTimer
+            // 
+            this.botIntervalTimer.Tick += new System.EventHandler(this.botIntervalTimer_Tick);
+            // 
             // MineSweeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -104,6 +109,7 @@
         private System.Windows.Forms.Timer secondTimer;
         private System.Windows.Forms.Label bombsLeftLabel;
         private System.Windows.Forms.Button newGameButton;
+        private System.Windows.Forms.Timer botIntervalTimer;
     }
 }
 

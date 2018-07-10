@@ -45,8 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Datastructures\PriorityQueue.cs" />
+    <Compile Include="Datastructures\Queue.cs" />
+    <Compile Include="Datastructures\Stack.cs" />
     <Compile Include="MineField\Field.cs" />
     <Compile Include="MineField\Tile.cs" />
+    <Compile Include="SolvingBot\MineSweeperBot.cs" />
     <Compile Include="MineSweeperForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using static MineSweeper.MineSweeperForm;
 
 namespace MineSweeper.Minefield {
+    /// <summary>
+    /// The minefield
+    /// </summary>
     public class Field {
         #region Variables
         /// <summary>
@@ -141,6 +144,10 @@ namespace MineSweeper.Minefield {
             _mouseDownIndex = LocationToIndex(x, y); // We only press if the user both pressed and released the mouse on the same tile
         }
 
+        public void MouseDown(Tile tile) {
+            _mouseDownIndex = GetIndexOfTile(tile);
+        }
+
         /// <summary>
         /// Finish the click process if we pressed the same tile again
         /// </summary>
@@ -149,8 +156,29 @@ namespace MineSweeper.Minefield {
         /// <param name="y">The Y location</param>
         /// <returns>True if all went well, false if we ded</returns>
         public bool Click(MouseModes mode, int x, int y) {
-            int index = LocationToIndex(x, y);
-            if (index != _mouseDownIndex) // If we aren't equal, stop, but we return true as we are still alive
+            return Click(mode, LocationToIndex(x, y));
+        }
+
+        /// <summary>
+        /// Finish the click process if we pressed the same tile again
+        /// </summary>
+        /// <param name="mode">The mouse mode used to click</param>
+        /// <param name="tile">The tile to click on</param>
+        /// <returns>True if all went well, false if we ded</returns>
+        public bool Click(MouseModes mode, Tile tile) {
+            return Click(mode, GetIndexOfTile(tile));
+        }
+
+        /// <summary>
+        /// Finish the click process if we pressed the same tile again
+        /// </summary>
+        /// <param name="mode">The mouse mode used to click</param>
+        /// <param name="index">The index of the tile</param>
+        /// <returns>True if all went well, false if we ded</returns>
+        public bool Click(MouseModes mode, int index) {
+            Console.WriteLine(index);
+
+            if (index != _mouseDownIndex || index < 0 || index >= size) // If we aren't equal, stop, but we return true as we are still alive
                 return true;
 
             if (firstClick) { // If it is the very first click of the game, we are forgiving and move a bomb if the user clicked on a bomb
@@ -278,7 +306,11 @@ namespace MineSweeper.Minefield {
         public List<Tile> GetNeighbours(Tile tile) {
             if (tile == null)
                 return null;
-            return GetNeighbours(_field.ToList().IndexOf(tile));
+            return GetNeighbours(GetIndexOfTile(tile));
+        }
+
+        public int GetIndexOfTile(Tile tile) {
+            return _field.ToList().IndexOf(tile);
         }
         #endregion
     }

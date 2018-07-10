@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MineSweeper.SolvingBot;
 
 namespace MineSweeper {
     /// <summary>
@@ -26,18 +27,18 @@ namespace MineSweeper {
 
         #region Static Variables
         /// <summary>
-        /// The minefield
+        /// The instance of the form
         /// </summary>
-        private static Field _field;
+        private static MineSweeperForm _instance;
         /// <summary>
         /// Indicates if the game is over
         /// </summary>
         private static bool _gameOver;
 
         /// <summary>
-        /// The minefield
+        /// The instance of the form
         /// </summary>
-        public static Field field { get => _field; }
+        public static MineSweeperForm instance { get => _instance; }
         /// <summary>
         /// Indicates if the game is over
         /// </summary>
@@ -53,6 +54,17 @@ namespace MineSweeper {
         /// Time spent playing this round
         /// </summary>
         private float timeSpent = 0.0f;
+        /// <summary>
+        /// The minefield
+        /// </summary>
+        private Field _field;
+
+        private MineSweeperBot bot;
+
+        /// <summary>
+        /// The minefield
+        /// </summary>
+        public Field field { get => _field; }
         #endregion
 
         #region Constructors
@@ -60,6 +72,7 @@ namespace MineSweeper {
         /// Simple Constructor
         /// </summary>
         public MineSweeperForm() {
+            _instance = this;
             InitializeComponent();
             timeSpentLabel.Text = timeSpent.ToString();
             bombsLeftLabel.Text = "0";
@@ -88,8 +101,8 @@ namespace MineSweeper {
                     if (result == DialogResult.Yes) // If the player wants to start a new game, do so
                         NewGame();
                 }
-                
-                if(_field.IsFinished) { // If the player finished, ask him if he wants to start a new game
+
+                if (_field.IsFinished) { // If the player finished, ask him if he wants to start a new game
                     minefieldPictureBox.Invalidate();
                     secondTimer.Stop();
                     DialogResult result = MessageBox.Show("You finished, Congrats!\nNew Game?", "You Win", MessageBoxButtons.YesNo);
@@ -129,7 +142,15 @@ namespace MineSweeper {
                 case 16:
                     _shiftPressed = false;
                     break;
+                //case 32:
+                //    bot = new MineSweeperBot();
+                //    botIntervalTimer.Start();
+                //    break;
             }
+        }
+
+        private void botIntervalTimer_Tick(object sender, EventArgs e) {
+            bot.doStep = true;
         }
         #endregion
 
@@ -178,6 +199,13 @@ namespace MineSweeper {
             minefieldPictureBox.Size = new Size(width + 1, height + 1);
             bombsLeftLabel.Location = new Point(formWidth - bombsLeftLabelOffset, bombsLeftLabel.Location.Y);
             newGameButton.Location = new Point((formWidth - newGameButton.Size.Width) / 2, newGameButton.Location.Y);
+        }
+
+        /// <summary>
+        /// Redraws the mine field
+        /// </summary>
+        public void Redraw() {
+            minefieldPictureBox.Invalidate();
         }
         #endregion
     }
