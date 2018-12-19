@@ -17,15 +17,15 @@ namespace MineSweeper {
         /// <summary>
         /// The width of the field
         /// </summary>
-        public int width = 20;
+        public static int width = 20;
         /// <summary>
         /// The height of the field
         /// </summary>
-        public int height = 20;
+        public static int height = 20;
         /// <summary>
         /// The number of bombs
         /// </summary>
-        public int bombs = 80;
+        public static int bombs = 80;
         /// <summary>
         /// Whether we pressed new game of cancel
         /// </summary>
@@ -38,6 +38,10 @@ namespace MineSweeper {
         /// </summary>
         public NewGameForm() {
             InitializeComponent();
+
+            widthNumeric.Value = width;
+            heightNumeric.Value = height;
+            bombsNumeric.Value = bombs;
         }
         #endregion
 

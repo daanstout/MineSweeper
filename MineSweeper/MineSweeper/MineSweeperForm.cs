@@ -164,7 +164,7 @@ namespace MineSweeper {
             form.ShowDialog();
 
             if (form.newGame) {
-                _field = new Field(form.width, form.height, form.bombs);
+                _field = new Field(NewGameForm.width, NewGameForm.height, NewGameForm.bombs);
                 bombsLeftLabel.Text = _field.numActiveBombs.ToString();
                 minefieldPictureBox.Invalidate();
                 secondTimer.Start();
