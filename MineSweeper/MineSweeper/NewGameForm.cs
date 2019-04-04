@@ -25,7 +25,7 @@ namespace MineSweeper {
         /// <summary>
         /// The number of bombs
         /// </summary>
-        public static int bombs = 40;
+        public static int bombs = 80;
         /// <summary>
         /// Whether we pressed new game of cancel
         /// </summary>
