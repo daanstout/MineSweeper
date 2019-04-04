@@ -176,7 +176,7 @@ namespace MineSweeper.Minefield {
         /// <param name="index">The index of the tile</param>
         /// <returns>True if all went well, false if we ded</returns>
         public bool Click(MouseModes mode, int index) {
-            Console.WriteLine(index);
+            //Console.WriteLine(index);
 
             if (index != _mouseDownIndex || index < 0 || index >= size) // If we aren't equal, stop, but we return true as we are still alive
                 return true;
@@ -311,6 +311,22 @@ namespace MineSweeper.Minefield {
 
         public int GetIndexOfTile(Tile tile) {
             return _field.ToList().IndexOf(tile);
+        }
+
+        public void ProcessBotClick(Tile tile, MouseModes mode) {
+            tile.Click(mode);
+
+            if (mode == MouseModes.Flag) {
+                if (!tile.isRevealed) {
+                    if (tile.isFlagged) {
+                        _numFlaggedBombs++;
+                        _numActiveBombs--;
+                    } else {
+                        _numFlaggedBombs--;
+                        _numActiveBombs++;
+                    }
+                }
+            }
         }
         #endregion
     }

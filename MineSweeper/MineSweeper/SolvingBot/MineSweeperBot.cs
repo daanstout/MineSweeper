@@ -1,4 +1,5 @@
 ﻿using MineSweeper.Minefield;
+using MineSweeper.Datastructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,50 +28,99 @@ namespace MineSweeper.SolvingBot {
         }
 
         private void Solve() {
-            Tile currentTile = null;
+            Datastructures.Queue<Tile> q = new Datastructures.Queue<Tile>();
 
+            {
+                Tile tile = FindRevealedTile();
 
+                if (tile == null) {
+                    tile = FindFlaggedTile();
 
-            //while (!form.field.IsFinished || !MineSweeperForm.gameOver) {
-            foreach (Tile t in form.field.field) {
-                if (t.isRevealed) {
-                    //currentTile = t;
-                    //break;
-
-                    List<Tile> neighbours = form.field.GetNeighbours(t);
-
-                    if (neighbours == null)
-                        //continue
-                        continue;
-
-                    if (t.surroundingBombs == 0)
-                        //continue;
-                        continue;
-
-                    int hid = 0;
-
-                    foreach (Tile u in neighbours)
-                        if (!u.isRevealed)
-                            hid++;
-
-                    //Console.WriteLine(hid);
-
-                    if (hid == t.surroundingBombs) {
-                        foreach (Tile u in neighbours) {
-                            if (!u.isRevealed && !u.isFlagged) {
-                                //u.Click(MineSweeperForm.MouseModes.Flag);
-                                form.field.MouseDown(u);
-                                form.field.Click(MineSweeperForm.MouseModes.Flag, u);
-                            }
-                        }
-                        form.Redraw();
+                    if (tile == null) {
+                        Console.WriteLine("No more leads");
+                        return;
                     }
                 }
+
+                q.Enqueue(tile);
             }
 
-            
+            while (!q.isEmpty) {
+                Tile tile = q.Dequeue();
 
-            //}
+                if (tile == null)
+                    continue;
+
+                List<Tile> neighbours = form.field.GetNeighbours(tile);
+
+                if (neighbours == null)
+                    continue;
+
+                if (tile.isRevealed && tile.surroundingBombs > 0) {
+                    // We have been clicked on and have a surrounding number of bombs
+                } else if (!tile.isRevealed && tile.isFlagged) {
+                    // We have been flagged
+                }
+            }
         }
+
+        private Tile FindRevealedTile() {
+            foreach (Tile t in form.field.field)
+                if (t.isRevealed)
+                    if (FlagBombs(t))
+                        return t;
+
+            return null;
+        }
+
+        private Tile FindFlaggedTile() {
+            //foreach (Tile t in form.field.field) 
+            //    if (t.isFlagged) 
+            //        if (ClearTiles(t))
+            //            return t;
+
+            return null;
+        }
+
+        private bool FlagBombs(Tile tile) {
+            if (tile.surroundingBombs == 0)
+                return false;
+
+            List<Tile> neighbours = form.field.GetNeighbours(tile);
+
+            if (neighbours == null)
+                return false;
+
+            int hid = 0;
+
+            foreach (Tile u in neighbours)
+                if (!u.isRevealed)
+                    hid++;
+
+            Console.WriteLine(hid);
+
+            if (hid == tile.surroundingBombs) {
+                foreach (Tile u in neighbours)
+                    if (!u.isRevealed && !u.isFlagged)
+                        form.field.ProcessBotClick(u);
+
+                form.Redraw();
+                return true;
+            }
+
+            return false;
+        }
+
+        //private bool ClearTiles(Tile tile) {
+        //    if (!tile.isFlagged)
+        //        return false;
+
+        //    List<Tile> neighbours = form.field.GetNeighbours(tile);
+
+        //    if(neighbours == null)
+        //        return false;
+
+
+        //}
     }
 }
